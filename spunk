@@ -1,0 +1,62 @@
+#!/bin/bash
+
+######################################
+#
+#    What a wonderful morning...
+#    ... Spunk!
+#
+######################################
+
+# Use -m $msg to add all files and push commit to git.
+#
+
+# test dependencies
+args=("$@")
+
+function gitCommitAll {
+
+	git add .
+	git commit -m $1
+	git push
+}
+
+# http://stackoverflow.com/a/24210877/288644
+function get_branch {
+      git branch --no-color | grep -E '^\*' | awk '{print $2}'
+      # or
+      # git symbolic-ref --short -q HEAD || echo "default_value";
+}
+
+function gitPullAll {
+
+	branch=`get_branch`
+	git stash
+	git checkout staging && git pull
+	git checkout master && git pull
+	git checkout ${branch} && git pull
+}
+
+for key in ${!args[@]}; do
+
+	param=${args[$key]}
+
+	case "$param" in
+
+		# git commit all
+		-m)
+			msg=${args[$key+1]}
+			gitCommitAll $msg
+		;;
+
+		# git pull (staging & master)
+		pulled-onions)
+			gitPullAll
+		;;
+
+		# autocomplete
+		shortlist)
+			pulled-onions
+		;;
+
+	esac
+done

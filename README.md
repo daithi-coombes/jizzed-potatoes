@@ -1,2 +1,2 @@
 # jizzed-potatoes
-you won't believe your eyes
+... hate that, another wasted repo for no more than just a snippet. Clicky Clicky.
