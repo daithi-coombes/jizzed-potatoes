@@ -23,8 +23,6 @@ function gitCommitAll {
 # http://stackoverflow.com/a/24210877/288644
 function get_branch {
       git branch --no-color | grep -E '^\*' | awk '{print $2}'
-      # or
-      # git symbolic-ref --short -q HEAD || echo "default_value";
 }
 
 function gitPullAll {
@@ -34,6 +32,13 @@ function gitPullAll {
 	git checkout staging && git pull
 	git checkout master && git pull
 	git checkout ${branch} && git pull
+}
+
+function tmuxNode {
+	tmux
+	tmux split-window 'exec node'
+	tmux select-pane -U
+	git status
 }
 
 for key in ${!args[@]}; do
@@ -51,6 +56,10 @@ for key in ${!args[@]}; do
 		# git pull (staging & master)
 		pulled-onions)
 			gitPullAll
+		;;
+
+		fart-bubble)
+			tmuxNode
 		;;
 
 		# autocomplete
